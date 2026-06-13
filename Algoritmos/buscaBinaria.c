@@ -21,12 +21,36 @@ void buscaBinaria(int v[],int n, int k){
 printf("elemento nao encontrado");
 }
 
+int buscaBinariaRecursiva(int v[],int i, int n, int k ){
+
+    int m=(n+i-1)/2;
+    if(i>n){
+        printf("Nao achei");
+        return 0;
+    }
+
+    if (k > v[m]){
+       return buscaBinariaRecursiva(v,m+1,n,k);
+    }
+    else if (k < v[m]){
+        return buscaBinariaRecursiva(v,i,m-1,k);
+    }
+    else if (k == v[m]){
+        printf("Achei em %d", m);
+        return v[m]; 
+    }
+
+    printf("Nao achei");
+    return 0;
+    
+}
+
 int main(){
     int n= 12;
     int v[]={3,6,2,6,9,0,4,8,3,2,1,7};
     int vOrd[]={0,1,2,2,3,3,4,6,6,7,8,9,10};
 
-    buscaBinaria(vOrd,n,7);
+    buscaBinariaRecursiva(vOrd,0,n-1,7);
 
    return 0; 
 }
