@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* A tarefa consiste em localizar o maior elemento da lista,
- e move-lo para a  ́ultima posicao*/ 
-  /* A funçao que responde esta questao é a maiorFinal,
+/* A tarefa consiste em inverter a ordem dos elementos da listas*/ 
+  /* A funçao que responde esta questao é a parImpar,
   Analise: Por conta do loop while perceorremos td a 
     lista logo no pior caso temos o tempo O(N)*/
-
 
 
 typedef struct Lista{
@@ -36,6 +34,7 @@ Lista* inserir_fim(int id,Lista* l){
 
     return l;
 }
+
 Lista* liberar(Lista* l){
     Lista *aux=l;
     while (aux!=NULL){
@@ -48,7 +47,6 @@ Lista* liberar(Lista* l){
 }
 
 void imprimir(Lista *l){
-
     Lista* aux = l;
     int i=0;
     while (aux!=NULL){
@@ -57,51 +55,23 @@ void imprimir(Lista *l){
     }
 }
 
-Lista* maiorFinal(Lista *l){
-
-    /*Por conta do loop while perceorremos td a 
-    lista logo no pior caso temo o tempo O(N)*/
-
-    if (l==NULL || l->prox==NULL){
-        return l;
-    }
-
-    Lista *atual=l->prox;
-    Lista *antAtual=l;
-    Lista *maior=l;
-    Lista *antMaior=NULL;
-    Lista *fim=NULL;
-
-    while(atual!=NULL){
-        if (atual->id > maior->id){
-            maior=atual;
-            antMaior=antAtual;
-        }
-        if(atual->prox == NULL){
-            fim=atual;
-        }
-
-        antAtual=atual;
-        atual=atual->prox;
+Lista* inverterOrdem(Lista *l){
+    Lista *atual=l;
+    Lista *ant=NULL;
+    Lista *proxim=NULL;
+    
+    while (atual!=NULL){
+        proxim=atual->prox;
+        atual->prox=ant;
+        ant=atual;
+        atual=proxim;
         
     }
-    
-    if(antMaior== NULL){
-        Lista *aux=maior->prox;
-        maior->prox=NULL;
-        fim->prox=maior;
-        return aux;
-    }
-    if (maior ==fim){
-        return l;
-    }
-    antMaior->prox=maior->prox;
-    fim->prox=maior;
-    maior->prox=NULL;
-    
-     
+    l=ant;
+    imprimir(l);
     return l;
     
+
 }
 
 
@@ -116,11 +86,7 @@ int main(){
     l=inserir_fim(11,l);
     l=inserir_fim(9,l);
 
-    imprimir(l);
-    printf("\n");
-    l=maiorFinal(l);
-    printf("\n");
-    imprimir(l);
+    l=inverterOrdem(l);
 
     l=liberar(l);
 

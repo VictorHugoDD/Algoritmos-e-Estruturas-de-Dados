@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* A tarefa consiste em localizar o maior elemento da lista,
- e move-lo para a  ́ultima posicao*/ 
-  /* A funçao que responde esta questao é a maiorFinal,
+/*A tarefa consiste em remover da lista todas as copias de um certo elemento k*/ 
+  /* A funçao que responde esta questao é a delCopia,
   Analise: Por conta do loop while perceorremos td a 
     lista logo no pior caso temos o tempo O(N)*/
-
 
 
 typedef struct Lista{
@@ -36,6 +34,7 @@ Lista* inserir_fim(int id,Lista* l){
 
     return l;
 }
+
 Lista* liberar(Lista* l){
     Lista *aux=l;
     while (aux!=NULL){
@@ -48,7 +47,6 @@ Lista* liberar(Lista* l){
 }
 
 void imprimir(Lista *l){
-
     Lista* aux = l;
     int i=0;
     while (aux!=NULL){
@@ -57,71 +55,57 @@ void imprimir(Lista *l){
     }
 }
 
-Lista* maiorFinal(Lista *l){
-
-    /*Por conta do loop while perceorremos td a 
-    lista logo no pior caso temo o tempo O(N)*/
-
-    if (l==NULL || l->prox==NULL){
+Lista* delCopia(Lista* l,int k){
+    if (l == NULL){
         return l;
     }
 
-    Lista *atual=l->prox;
-    Lista *antAtual=l;
-    Lista *maior=l;
-    Lista *antMaior=NULL;
-    Lista *fim=NULL;
-
+    Lista *atual=l;
+    Lista *aux=NULL;
+    Lista *ant=NULL;
     while(atual!=NULL){
-        if (atual->id > maior->id){
-            maior=atual;
-            antMaior=antAtual;
-        }
-        if(atual->prox == NULL){
-            fim=atual;
-        }
+        if(atual->id == k){
+            if (atual == l){
+                aux=l->prox;
+                free(l);
+                l=aux;
+                atual=l;
+            }
+            else{
+                aux=atual;
+                ant->prox=atual->prox;
+                atual=atual->prox;
+                free(aux);
 
-        antAtual=atual;
-        atual=atual->prox;
+            }
+            
+        }else{
+            
+            ant=atual;
+            atual=atual->prox;
+            
+        }
+        
         
     }
-    
-    if(antMaior== NULL){
-        Lista *aux=maior->prox;
-        maior->prox=NULL;
-        fim->prox=maior;
-        return aux;
-    }
-    if (maior ==fim){
-        return l;
-    }
-    antMaior->prox=maior->prox;
-    fim->prox=maior;
-    maior->prox=NULL;
-    
-     
     return l;
+
     
 }
 
-
-
 int main(){
     Lista* l=NULL;
-    l=inserir_fim(13,l);
-    l=inserir_fim(2,l);
-    l=inserir_fim(6,l);
     l=inserir_fim(1,l);
-    l=inserir_fim(15,l);
-    l=inserir_fim(11,l);
+    l=inserir_fim(7,l);
+    l=inserir_fim(4,l);
+    l=inserir_fim(7,l);
+    l=inserir_fim(7,l);
     l=inserir_fim(9,l);
+    l=inserir_fim(3,l);
+    l=inserir_fim(6,l);
 
+    l=delCopia(l,7);
     imprimir(l);
-    printf("\n");
-    l=maiorFinal(l);
-    printf("\n");
-    imprimir(l);
-
     l=liberar(l);
 
     return 0;

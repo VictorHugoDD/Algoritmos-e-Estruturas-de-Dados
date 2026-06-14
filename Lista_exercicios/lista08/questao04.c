@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* A tarefa consiste em localizar o maior elemento da lista,
- e move-lo para a  ́ultima posicao*/ 
-  /* A funçao que responde esta questao é a maiorFinal,
+/* A tarefa consiste duplicar os impares mantendo ordem*/ 
+  /* A funçao que responde esta questao é a duImpar,
   Analise: Por conta do loop while perceorremos td a 
     lista logo no pior caso temos o tempo O(N)*/
-
 
 
 typedef struct Lista{
@@ -36,6 +34,7 @@ Lista* inserir_fim(int id,Lista* l){
 
     return l;
 }
+
 Lista* liberar(Lista* l){
     Lista *aux=l;
     while (aux!=NULL){
@@ -48,7 +47,6 @@ Lista* liberar(Lista* l){
 }
 
 void imprimir(Lista *l){
-
     Lista* aux = l;
     int i=0;
     while (aux!=NULL){
@@ -57,51 +55,27 @@ void imprimir(Lista *l){
     }
 }
 
-Lista* maiorFinal(Lista *l){
-
-    /*Por conta do loop while perceorremos td a 
-    lista logo no pior caso temo o tempo O(N)*/
-
-    if (l==NULL || l->prox==NULL){
+Lista* duImpar(Lista* l){
+    if (l==NULL){
+        printf("Vazio");
         return l;
     }
-
-    Lista *atual=l->prox;
-    Lista *antAtual=l;
-    Lista *maior=l;
-    Lista *antMaior=NULL;
-    Lista *fim=NULL;
-
-    while(atual!=NULL){
-        if (atual->id > maior->id){
-            maior=atual;
-            antMaior=antAtual;
-        }
-        if(atual->prox == NULL){
-            fim=atual;
-        }
-
-        antAtual=atual;
-        atual=atual->prox;
-        
-    }
     
-    if(antMaior== NULL){
-        Lista *aux=maior->prox;
-        maior->prox=NULL;
-        fim->prox=maior;
-        return aux;
-    }
-    if (maior ==fim){
-        return l;
-    }
-    antMaior->prox=maior->prox;
-    fim->prox=maior;
-    maior->prox=NULL;
+Lista *atual=l;
+    while (atual!=NULL){
+        if (atual->id %2 != 0){ //impar
+            Lista *copia=criarLista(atual->id);
+            copia->prox=atual->prox;
+            atual->prox=copia;
+            atual=copia->prox;
+        }
+        else{
+            atual=atual->prox;
+        }
     
-     
+    }
+    imprimir(l);
     return l;
-    
 }
 
 
@@ -116,12 +90,7 @@ int main(){
     l=inserir_fim(11,l);
     l=inserir_fim(9,l);
 
-    imprimir(l);
-    printf("\n");
-    l=maiorFinal(l);
-    printf("\n");
-    imprimir(l);
-
+    l=duImpar(l);
     l=liberar(l);
 
     return 0;

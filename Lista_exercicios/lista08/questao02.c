@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* A tarefa consiste em localizar o maior elemento da lista,
- e move-lo para a  ́ultima posicao*/ 
-  /* A funçao que responde esta questao é a maiorFinal,
+/* A tarefa consiste em separar os elementos pares e 
+ımpares em listas diferentes*/ 
+  /* A funçao que responde esta questao é a parImpar,
   Analise: Por conta do loop while perceorremos td a 
     lista logo no pior caso temos o tempo O(N)*/
 
@@ -36,6 +36,7 @@ Lista* inserir_fim(int id,Lista* l){
 
     return l;
 }
+
 Lista* liberar(Lista* l){
     Lista *aux=l;
     while (aux!=NULL){
@@ -57,52 +58,56 @@ void imprimir(Lista *l){
     }
 }
 
-Lista* maiorFinal(Lista *l){
-
-    /*Por conta do loop while perceorremos td a 
-    lista logo no pior caso temo o tempo O(N)*/
-
-    if (l==NULL || l->prox==NULL){
-        return l;
+void parImpar(Lista* l){
+    if (l==NULL){
+        printf("Vazio");
+        return;
     }
-
-    Lista *atual=l->prox;
-    Lista *antAtual=l;
-    Lista *maior=l;
-    Lista *antMaior=NULL;
-    Lista *fim=NULL;
-
-    while(atual!=NULL){
-        if (atual->id > maior->id){
-            maior=atual;
-            antMaior=antAtual;
+    Lista *par=NULL;
+    Lista *impar=NULL;
+    Lista *auxImp=NULL,*auxPar=NULL;
+    Lista *atual=l;
+    while (atual!=NULL){
+        if((atual->id % 2) != 0){ //impar
+            if (impar ==NULL){
+                impar = atual;
+                auxImp=atual;
+            }
+            else{
+                auxImp->prox=atual;
+                auxImp=atual;
+            }
+            
         }
-        if(atual->prox == NULL){
-            fim=atual;
+        else if((atual->id % 2) == 0){ //par
+            if (par ==NULL){
+                par = atual;
+                auxPar=atual;
+                
+            }
+            else{
+                auxPar->prox=atual;
+                auxPar=atual;
+            }
+            
         }
-
-        antAtual=atual;
-        atual=atual->prox;
         
-    }
+        atual=atual->prox;
+     }
+
+    if (auxImp !=NULL){ auxImp -> prox =NULL;}
+    if (auxPar !=NULL){ auxPar -> prox =NULL;}
     
-    if(antMaior== NULL){
-        Lista *aux=maior->prox;
-        maior->prox=NULL;
-        fim->prox=maior;
-        return aux;
-    }
-    if (maior ==fim){
-        return l;
-    }
-    antMaior->prox=maior->prox;
-    fim->prox=maior;
-    maior->prox=NULL;
-    
-     
-    return l;
-    
+     printf("Impar: ");
+     imprimir(impar);
+     printf("\n");
+     printf("\n");
+     printf("Par: ");
+    imprimir(par);
+
+
 }
+
 
 
 
@@ -115,12 +120,8 @@ int main(){
     l=inserir_fim(15,l);
     l=inserir_fim(11,l);
     l=inserir_fim(9,l);
-
-    imprimir(l);
-    printf("\n");
-    l=maiorFinal(l);
-    printf("\n");
-    imprimir(l);
+    
+    parImpar(l);
 
     l=liberar(l);
 
